@@ -18,21 +18,21 @@ public class EmployeeController {
     @GetMapping(path = "/add")
     public Employee addEmployee(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
         Employee employee = new Employee(firstName, lastName);
-        employeeServiceImpl.add(employee);
+        employeeServiceImpl.put(firstName, lastName);
         return employee;
     }
 
     @GetMapping(path = "/remove")
     public Employee removeEmployee(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
         Employee employee = new Employee(firstName, lastName);
-        employeeServiceImpl.remove(employee);
+        employeeServiceImpl.remove(firstName,lastName);
         return employee;
     }
 
     @GetMapping(path = "/find")
     public Employee findEmployee(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
         Employee employee = new Employee(firstName, lastName);
-        employeeServiceImpl.find(employee);
+        employeeServiceImpl.find(firstName, lastName);
         return employee;
     }
 

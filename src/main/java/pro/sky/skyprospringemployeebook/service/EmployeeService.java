@@ -3,10 +3,10 @@ package pro.sky.skyprospringemployeebook.service;
 import pro.sky.skyprospringemployeebook.model.Employee;
 
 public interface EmployeeService {
-    Employee add(Employee emp);
+    Employee put(String name, String lastName);
 
-    Employee find(Employee emp);
+    Employee find(String name, String lastName);
 
-    Employee remove(Employee emp);
+    Employee remove(String name, String lastName);
 
 }

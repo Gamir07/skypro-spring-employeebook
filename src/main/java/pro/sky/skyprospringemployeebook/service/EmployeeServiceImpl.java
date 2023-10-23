@@ -5,52 +5,51 @@ import pro.sky.skyprospringemployeebook.exceptions.EmployeeAlreadyAddedException
 import pro.sky.skyprospringemployeebook.exceptions.EmployeeNotFoundException;
 import pro.sky.skyprospringemployeebook.exceptions.EmployeeStorageIsFullException;
 import pro.sky.skyprospringemployeebook.model.Employee;
-import pro.sky.skyprospringemployeebook.service.EmployeeService;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private final List<Employee> employeeList;
+    public final Map<String, Employee> employees;
 
-    public EmployeeServiceImpl(List<Employee> employeeList) {
-        this.employeeList = employeeList;
+    public EmployeeServiceImpl() {
+        this.employees = new HashMap<>();
     }
-    private static int maxCapacity = 5;
 
-    public Employee add(Employee employee) {
-        if (employeeList.size() < maxCapacity) {
-            if (employeeList.contains(employee)) {
-                throw new EmployeeAlreadyAddedException("Сотрудник уже имеется в коллекции");
-            }
-            employeeList.add(employee);
-            maxCapacity--;
-            return employee;
+    public Employee put(String firstName, String lastName) {
+        Employee employee = new Employee(firstName, lastName);
+        if (employees.containsKey(employee.getFullName())) {
+            throw new EmployeeAlreadyAddedException("Сотрудник уже имеется в коллекции");
         } else {
-            throw new EmployeeStorageIsFullException("Превышен лимит сотрудников");
+            employees.put(employee.getFullName(), employee);
+            return employee;
         }
+
     }
 
-    public Employee find(Employee employee) {
-        if (employeeList.contains(employee)) {
-            return employee;
+    public Employee find(String name, String lastName) {
+        Employee employee = new Employee(name, lastName);
+        if (employees.containsKey(employee.getFullName())) {
+            return employees.get(employee.getFullName());
         } else {
             throw new EmployeeNotFoundException("Сотрудник не найден");
         }
     }
 
-    public Employee remove(Employee employee) {
-        if (employeeList.contains(employee)) {
-            employeeList.remove(employee);
-            return employee;
+    public Employee remove(String name, String lastName) {
+        Employee employee = new Employee(name, lastName);
+        if (employees.containsKey(employee.getFullName())) {
+            return employees.remove(employee.getFullName());
+
         } else {
             throw new EmployeeNotFoundException("Сотрудник не найден");
         }
     }
 
     public Collection<Employee> printAllEmployees() {
-        return Collections.unmodifiableList(employeeList);
+        return Collections.unmodifiableCollection(employees.values());
     }
 }
