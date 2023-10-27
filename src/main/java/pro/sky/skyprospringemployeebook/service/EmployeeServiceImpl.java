@@ -3,7 +3,6 @@ package pro.sky.skyprospringemployeebook.service;
 import org.springframework.stereotype.Service;
 import pro.sky.skyprospringemployeebook.exceptions.EmployeeAlreadyAddedException;
 import pro.sky.skyprospringemployeebook.exceptions.EmployeeNotFoundException;
-import pro.sky.skyprospringemployeebook.exceptions.EmployeeStorageIsFullException;
 import pro.sky.skyprospringemployeebook.model.Employee;
 
 import java.util.Collection;
@@ -19,8 +18,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.employees = new HashMap<>();
     }
 
-    public Employee put(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
+    public Employee add(String firstName, String lastName, int department, double salary) {
+        Employee employee = new Employee(firstName, lastName, department, salary);
         if (employees.containsKey(employee.getFullName())) {
             throw new EmployeeAlreadyAddedException("Сотрудник уже имеется в коллекции");
         } else {
@@ -30,8 +29,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     }
 
-    public Employee find(String name, String lastName) {
-        Employee employee = new Employee(name, lastName);
+    public Employee find(String name, String lastName, int department, double salary) {
+        Employee employee = new Employee(name, lastName, department, salary);
         if (employees.containsKey(employee.getFullName())) {
             return employees.get(employee.getFullName());
         } else {
@@ -39,8 +38,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-    public Employee remove(String name, String lastName) {
-        Employee employee = new Employee(name, lastName);
+    public Employee remove(String name, String lastName, int department, double salary) {
+        Employee employee = new Employee(name, lastName, department, salary);
         if (employees.containsKey(employee.getFullName())) {
             return employees.remove(employee.getFullName());
 
