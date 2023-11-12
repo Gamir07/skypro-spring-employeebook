@@ -16,23 +16,32 @@ public class EmployeeController {
     }
 
     @GetMapping(path = "/add")
-    public Employee addEmployee(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
-        Employee employee = new Employee(firstName, lastName);
-        employeeServiceImpl.put(firstName, lastName);
+    public Employee addEmployee(@RequestParam("firstName") String firstName,
+                                @RequestParam("lastName") String lastName,
+                                @RequestParam("department") int department,
+                                @RequestParam("salary") double salary) {
+        Employee employee = new Employee(firstName, lastName, department, salary);
+        employeeServiceImpl.add(firstName, lastName, department,salary);
         return employee;
     }
 
     @GetMapping(path = "/remove")
-    public Employee removeEmployee(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
-        Employee employee = new Employee(firstName, lastName);
-        employeeServiceImpl.remove(firstName,lastName);
+    public Employee removeEmployee(@RequestParam("firstName") String firstName,
+                                   @RequestParam("lastName") String lastName,
+                                   @RequestParam("department") int department,
+                                   @RequestParam("salary") double salary) {
+        Employee employee = new Employee(firstName, lastName, department, salary);
+        employeeServiceImpl.remove(firstName,lastName, department,salary);
         return employee;
     }
 
     @GetMapping(path = "/find")
-    public Employee findEmployee(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
-        Employee employee = new Employee(firstName, lastName);
-        employeeServiceImpl.find(firstName, lastName);
+    public Employee findEmployee(@RequestParam("firstName") String firstName,
+                                 @RequestParam("lastName") String lastName,
+                                 @RequestParam("department") int department,
+                                 @RequestParam("salary") double salary) {
+        Employee employee = new Employee(firstName, lastName, department, salary);
+        employeeServiceImpl.find(firstName, lastName, department,salary);
         return employee;
     }
 
