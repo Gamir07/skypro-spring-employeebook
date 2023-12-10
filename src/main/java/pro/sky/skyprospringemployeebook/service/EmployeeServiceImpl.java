@@ -1,15 +1,12 @@
 package pro.sky.skyprospringemployeebook.service;
 
 import org.springframework.stereotype.Service;
-import org.apache.commons.lang3.StringUtils;
 import pro.sky.skyprospringemployeebook.exceptions.EmployeeAlreadyAddedException;
 import pro.sky.skyprospringemployeebook.exceptions.EmployeeNotFoundException;
 import pro.sky.skyprospringemployeebook.exceptions.InvalidInputException;
 import pro.sky.skyprospringemployeebook.model.Employee;
 
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,8 +53,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-    public Collection<Employee> printAllEmployees() {
-        return Collections.unmodifiableCollection(employees.values());
+    public Map<String, Employee> getAllEmployees() {
+        return employees;
     }
 
     private void validateInput(String name, String lastName) {
