@@ -1,14 +1,19 @@
 package pro.sky.skyprospringemployeebook.service;
 
 import org.springframework.stereotype.Service;
+import org.apache.commons.lang3.StringUtils;
 import pro.sky.skyprospringemployeebook.exceptions.EmployeeAlreadyAddedException;
 import pro.sky.skyprospringemployeebook.exceptions.EmployeeNotFoundException;
+import pro.sky.skyprospringemployeebook.exceptions.InvalidInputException;
 import pro.sky.skyprospringemployeebook.model.Employee;
+
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.apache.commons.lang3.StringUtils.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -18,8 +23,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.employees = new HashMap<>();
     }
 
-    public Employee add(String firstName, String lastName, int department, double salary) {
-        Employee employee = new Employee(firstName, lastName, department, salary);
+    public Employee add(String name, String lastName, int department, double salary) {
+        validateInput(name, lastName);
+        Employee employee = new Employee(name, lastName, department, salary);
         if (employees.containsKey(employee.getFullName())) {
             throw new EmployeeAlreadyAddedException("Сотрудник уже имеется в коллекции");
         } else {
@@ -30,6 +36,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public Employee find(String name, String lastName, int department, double salary) {
+        validateInput(name, lastName);
         Employee employee = new Employee(name, lastName, department, salary);
         if (employees.containsKey(employee.getFullName())) {
             return employees.get(employee.getFullName());
@@ -39,6 +46,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public Employee remove(String name, String lastName, int department, double salary) {
+        validateInput(name, lastName);
         Employee employee = new Employee(name, lastName, department, salary);
         if (employees.containsKey(employee.getFullName())) {
             return employees.remove(employee.getFullName());
@@ -50,5 +58,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     public Collection<Employee> printAllEmployees() {
         return Collections.unmodifiableCollection(employees.values());
+    }
+
+    private void validateInput(String name, String lastName) {
+        if (!(isAlpha(name) & isAlpha(lastName))){
+            throw new InvalidInputException();
+        }
     }
 }
