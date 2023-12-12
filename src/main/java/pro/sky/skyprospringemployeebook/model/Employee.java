@@ -1,7 +1,5 @@
 package pro.sky.skyprospringemployeebook.model;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.Objects;
 
 import static org.apache.commons.lang3.StringUtils.*;
@@ -57,6 +55,8 @@ public class Employee {
         return "Employee{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", department=" + department +
+                ", salary=" + salary +
                 '}';
     }
 }

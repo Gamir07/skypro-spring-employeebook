@@ -12,31 +12,31 @@ import java.util.stream.Collectors;
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
 
-    private EmployeeServiceImpl employeeService;
+    private final EmployeeServiceImpl employeeService;
 
     public DepartmentServiceImpl(EmployeeServiceImpl employeeService) {
         this.employeeService = employeeService;
     }
 
-    public Employee employeeWithMinSalary(int department) {
+    public Double minSalaryInDepartment(int department) {
         if (department < 1 || department > 5) {
             throw new DepartmentNotFoundException("Такого департамента не существует");
         }
-        return employeeService.employees.values().stream()
+        return employeeService.getAllEmployees().values().stream()
                 .filter(e -> e.getDepartment() == department)
                 .min(Comparator.comparingDouble(Employee::getSalary))
-                .orElseThrow();
+                .orElseThrow().getSalary();
 
     }
 
-    public Employee employeeWithMaxSalary(int department) {
+    public Double maxSalaryInDepartment(int department) {
         if (department < 1 || department > 5) {
             throw new DepartmentNotFoundException("Такого департамента не существует");
         }
-        return employeeService.employees.values().stream()
+        return employeeService.getAllEmployees().values().stream()
                 .filter(e -> e.getDepartment() == department)
                 .max(Comparator.comparingDouble(Employee::getSalary))
-                .orElseThrow();
+                .orElseThrow().getSalary();
 
     }
 
@@ -44,12 +44,22 @@ public class DepartmentServiceImpl implements DepartmentService {
         if (department < 1 || department > 5) {
             throw new DepartmentNotFoundException("Такого департамента не существует");
         }
-        return employeeService.employees.values().stream().
+        return employeeService.getAllEmployees().values().stream().
                 filter(emp -> department == emp.getDepartment()).
-                collect(Collectors.toMap(Employee::toString, e2->e2));
+                collect(Collectors.toMap(Employee::getFullName, e2 -> e2));
+    }
+
+    public Double totalSalaryForDepartment(int department) {
+        if (department < 1 || department > 5) {
+            throw new DepartmentNotFoundException("Такого департамента не существует");
+        }
+        return employeeService.getAllEmployees().values().stream().
+                filter(emp -> department == emp.getDepartment()).
+                map(Employee::getSalary).
+                reduce(Double::sum).orElseThrow();
     }
 
     public Map<Integer, List<Employee>> printEmployeesInDepartments() {
-        return employeeService.employees.values().stream().collect(Collectors.groupingBy(Employee::getDepartment));
+        return employeeService.getAllEmployees().values().stream().collect(Collectors.groupingBy(Employee::getDepartment));
     }
 }
